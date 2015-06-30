@@ -1,0 +1,97 @@
+\documentclass[11pt]{article}
+
+\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.90}
+\usepackage{listings}
+\usepackage{listings}
+\lstdefinestyle{Bash}
+{	language=bash,
+	%keywordstyle=\color{red},
+	backgroundcolor=\color{light-gray},
+	basicstyle=\ttfamily,
+	xleftmargin=.25in,
+	xrightmargin=.25in,
+	breaklines=true,
+	literate={\$}{{\textcolor{blue}{\$}}}1 
+}
+
+\begin{document}
+
+\title{JPL Spice on my Mac}
+\author{Justin Erwin}
+\date{updated \today}
+\maketitle
+
+I put all the spice stuff in a directory in my home folder called "naif", so its full path is the "$\sim$/lib/naif". The C and Fortran toolkit can be downloaded from JPL's Spice Toolkit webpage (http://naif.jpl.nasa.gov/naif/toolkit.html).
+
+
+
+%%%%%%%
+\section{Fortran}
+
+\subsection{Basic install}
+\begin{enumerate}
+	\item Download the Fortran toolkit for gfortran 64bit, need files "toolkit.tar.Z" and "importSpice.csh", and put them in the "$\sim$/lib/naif" directory.
+	\item From the terminal, cd into the "$\sim$/naif" directory, and run: 
+\begin{lstlisting}[style=Bash]
+/bin/csh importSpice.csh
+\end{lstlisting}
+	This will extract all the files into a new folder "toolkit".
+\end{enumerate}
+
+\subsection{Recompile with local gfortran}
+Just to make sure the toolkit is compatible with the code I write, I recompile the code.
+\begin{enumerate}
+	\item cd into "toolkit"
+	\item enter:
+\begin{lstlisting}[style=Bash]
+/bin/csh makeall.csh
+\end{lstlisting} 
+	Let it do its work.
+\end{enumerate}
+
+\subsection{Linking to Library}
+describe how to correctly link to library using gfortran.
+
+
+
+%%%%%%%
+\section{C}
+
+\subsection{Basic install}
+\begin{enumerate}
+	\item Download the C toolkit for "Mac/Intel, OSX, Apple C, 64bit", need files "cspice.tar.Z" and "importCSpice.csh", and put them in the "$\sim$/lib/naif" directory.
+	\item From the terminal, cd into the "$\sim$/lib/naif" directory, and run 
+\begin{lstlisting}[style=Bash]
+/bin/csh importCSpice.csh
+\end{lstlisting}	
+	This will extract all the files into a new folder "cspice".
+\end{enumerate}
+
+\subsection{Recompile with local gcc}
+Just to make sure the toolkit is compatible with the code I write, I recompile the code.
+\begin{enumerate}
+	\item cd into "cspice"
+	\item Instead of using Apples C compiler (cc), we want our gcc version. To trigger this in the provided script we need to set the environmental variable "TKCOMPILER":
+\begin{lstlisting}[style=Bash]
+export TKCOMPILER="gcc"
+\end{lstlisting} 
+	\item enter:
+\begin{lstlisting}[style=Bash]
+/bin/csh makeall.csh
+\end{lstlisting} 
+	 Let it do its work.
+\end{enumerate}
+
+\subsection{Linking to Library}
+describe how to correctly link to library using gcc.
+
+
+
+%%%%%%%
+\section{Python}
+
+The most complete Python implementation/wrapper of Spice is SpiceyPy, available via github. I used a combination of Macports and Pip to install all the requirements, obtained SpiceyPy using git, and did a manual install using the --user option. In this installation it does download its own copy of CSpice, but who cares about hard-drive space at this point.
+
+
+\end{document}
